@@ -1,5 +1,5 @@
-public class UsuarioNoAutorizado extends RuntimeException {
-  public UsuarioNoAutorizado(String message) {
+public class UsuarioNoAutorizadoException extends RuntimeException {
+  public UsuarioNoAutorizadoException(String message) {
     super(message);
   }
 }
