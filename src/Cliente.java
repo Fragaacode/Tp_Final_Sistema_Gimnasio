@@ -41,7 +41,7 @@ public final class Cliente extends Persona implements iPagable {
             throw new FondosInsuficientesException("Fondos Insuficientes para pagar la cuota");
         }
         saldo -= monto;
-        System.out.println(getNombre() +"Ha pagado la cuota de $"+ monto + "Slado restante"+ saldo);
+        System.out.println(getNombre() +"Ha pagado la cuota de $"+ monto + "Saldo restante"+ saldo);
     }
 
     @Override
