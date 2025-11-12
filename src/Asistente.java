@@ -4,12 +4,12 @@ public final class Asistente extends Persona {
     private eTurno eTurno;
 
     /**   CONSTRUCTORES   **/
-    public Asistente(int id) {
-        super(id);
+    public Asistente() {
+
     }
 
-    public Asistente(String nombre, int edad, String dni, int id, eTurno eTurno) {
-        super(nombre, edad, dni, id);
+    public Asistente(String nombre, int edad, String dni, eTurno eTurno) {
+        super(nombre, edad, dni);
         this.eTurno = eTurno;
     }
 

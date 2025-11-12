@@ -6,12 +6,12 @@ public final class Cliente extends Persona implements iPagable {
 
 
     /**   CONSTRUCTORES   **/
-    public Cliente(int id) {
-        super(id);
+    public Cliente () {
+
     }
 
-    public Cliente(String nombre, int edad, String dni, int id, Double saldo, eCuota eCuota) {
-        super(nombre, edad, dni, id);
+    public Cliente(String nombre, int edad, String dni, Double saldo, eCuota eCuota) {
+        super(nombre, edad, dni);
         this.saldo = saldo;
         this.eCuota = eCuota;
     }
@@ -25,14 +25,13 @@ public final class Cliente extends Persona implements iPagable {
         this.saldo = saldo;
     }
 
-    public eCuota getCuota() {
+    public eCuota geteCuota() {
         return eCuota;
     }
 
-    public void setCuota(eCuota eCuota) {
+    public void seteCuota(eCuota eCuota) {
         this.eCuota = eCuota;
     }
-
 
     /**   METODOS   **/
     @Override
@@ -41,15 +40,18 @@ public final class Cliente extends Persona implements iPagable {
             throw new FondosInsuficientesException("Fondos Insuficientes para pagar la cuota");
         }
         saldo -= monto;
-        System.out.println(getNombre() +"Ha pagado la cuota de $"+ monto + "Slado restante"+ saldo);
+        System.out.println(getNombre() +" pagaste la cuota de $"+ monto + " salado restante $"+ saldo);
+    }
+    public String recargarSaldo(double nuevoSaldo){
+        saldo += nuevoSaldo;
+        return "Saldo actualizado";
     }
 
     @Override
     public String toString() {
-        return "Datos del Cliente{" +
-                "saldo=" + saldo +
-                ", cuota=" + eCuota +
-                "} " + super.toString();
+        return "Datos del Cliente: \n"+ super.toString() +
+                ", saldo=" + saldo +
+                ", cuota=" + eCuota ;
     }
 
     @Override

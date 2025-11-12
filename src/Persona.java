@@ -9,20 +9,16 @@ public abstract class Persona {
 
     /**   CONSTRUCTORES   **/
 
-    public Persona(int id) {
+    public Persona() {
         this.id = contador++;
     }
 
-    public Persona(String nombre, int edad, String dni, int id) {
+    public Persona(String nombre, int edad, String dni) {
         this.nombre = nombre;
         this.edad = edad;
         this.dni = dni;
         this.id = contador++;
     }
-
-    public Persona() {
-    }
-
 
     /**   GETTERS Y SETTERS   **/
     public String getNombre() {
@@ -59,12 +55,11 @@ public abstract class Persona {
 
     @Override
     public String toString() {
-        return "Persona{" +
-                "nombre='" + nombre + '\'' +
-                ", edad=" + edad +
-                ", dni='" + dni + '\'' +
-                ", id=" + id +
-                '}';
+        return
+                "nombre= '" + nombre + '\'' +
+                        ", edad= " + edad +
+                        ", dni= '" + dni + '\'' +
+                        ", id= " + id;
     }
 
     @Override
@@ -79,3 +74,4 @@ public abstract class Persona {
         return Objects.hashCode(id);
     }
 }
+

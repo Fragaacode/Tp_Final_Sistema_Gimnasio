@@ -2,13 +2,15 @@ public final class Administrador extends Persona {
     private String usuario;
     private String contraseña;
 
+
+
     /**   CONSTRUCTORES   **/
-    public Administrador(int id) {
-        super(id);
+
+    public Administrador() {
     }
 
-    public Administrador(String nombre, int edad, String dni, int id, String usuario, String contraseña) {
-        super(nombre, edad, dni, id);
+    public Administrador(String nombre, int edad, String dni, String usuario, String contraseña) {
+        super(nombre, edad, dni);
         this.usuario = usuario;
         this.contraseña = contraseña;
     }
@@ -24,16 +26,14 @@ public final class Administrador extends Persona {
     }
 
     /**   METODOS   **/
-    public boolean iniciarSesion(String user, String pass) throws UsuarioNoAutorizadoException{
-        if (usuario.equalsIgnoreCase(user) && contraseña.equalsIgnoreCase(pass)) {
-
-            System.out.println("inicio de Sesion exitoso, Bienvenido: "+ getNombre());
+    public boolean iniciarSesion(String user, String pass) throws UsuarioNoAutorizadoException {
+        if (usuario.equalsIgnoreCase(user) && contraseña.equals(pass)) { // contraseña normalmente distingue mayúsculas/minúsculas
+            return true; // usuario válido
+        } else {
+            throw new UsuarioNoAutorizadoException("Usuario o contraseña incorrectos");
         }
-        else {
-            System.out.println("usuario o contraseña ingresado incorrectamente");
-        }
-        return false;
     }
+
     @Override
     public String toString() {
         return "Datos del administrador :"+super.toString();
@@ -50,3 +50,4 @@ public final class Administrador extends Persona {
     }
 
 }
+
