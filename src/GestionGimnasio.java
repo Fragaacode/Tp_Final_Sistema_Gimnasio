@@ -1,11 +1,12 @@
+import java.io.PrintStream;
 import java.util.*;
-
 
     public class GestionGimnasio {
         private ArrayList<Cliente> clientes;           // Lista ordenable (ArrayList)
         private HashSet<Asistente> asistentes;         // Evita duplicados
         private HashMap<String, Administrador> administradores; // Acceso rápido por usuario
         private TreeMap<String, Cliente> clientesOrdenadosPorNombre; // Orden natural por clave
+
 
         public GestionGimnasio() {
             this.clientes = new ArrayList<>();
@@ -22,11 +23,12 @@ import java.util.*;
             System.out.println("Administrador agregado: " + admin.getNombre());
         }
 
-        public void accesoAdministrador(String usuario, String pass)
-                throws UsuarioNoAutorizadoException {
+        public void accesoAdministrador(String usuario, String pass) throws UsuarioNoAutorizadoException {
             boolean autorizado = false;
+            Iterator var4 = this.administradores.values().iterator();
 
-            for (Administrador admin : administradores.values()) {
+            while(var4.hasNext()) {
+                Administrador admin = (Administrador)var4.next();
                 if (admin.iniciarSesion(usuario, pass)) {
                     autorizado = true;
                     System.out.println("✅ Bienvenido, " + admin.getNombre());
@@ -34,8 +36,43 @@ import java.util.*;
                 }
             }
 
-            if (!autorizado)
+            if (!autorizado) {
                 throw new UsuarioNoAutorizadoException("Acceso denegado: usuario o contraseña incorrectos.");
+            }
+        }
+        public void crearNuevoAdmin() {
+            Scanner scan = new Scanner(System.in);
+            System.out.print("Ingrese nombre del administrador: ");
+            String nombre = scan.nextLine();
+            System.out.print("Ingrese edad: ");
+            int edad = scan.nextInt();
+            scan.nextLine();
+            System.out.print("Ingrese DNI: ");
+            String dni = scan.nextLine();
+            System.out.print("Ingrese nombre de usuario: ");
+            String usuario = scan.nextLine();
+            System.out.print("Ingrese contraseña: ");
+            String contrasenia = scan.nextLine();
+            Administrador nuevoAdmin = new Administrador(nombre,edad,dni,usuario,contrasenia);
+            this.agregarAdministrador(nuevoAdmin);
+            System.out.println("✅ Nuevo administrador creado exitosamente.");
+        }
+
+        public void mostrarAdministradores() {
+            if (this.administradores.isEmpty()) {
+                System.out.println("No hay administradores registrados.");
+            } else {
+                System.out.println("\n--- Lista de Administradores ---");
+                Iterator var1 = this.administradores.values().iterator();
+
+                while(var1.hasNext()) {
+                    Administrador admin = (Administrador)var1.next();
+                    PrintStream var10000 = System.out;
+                    String var10001 = admin.getNombre();
+                    var10000.println("Nombre: " + var10001 + " DNI: " + admin.getDni() + " Usuario: " + admin.getUsuario());
+                }
+            }
+
         }
 
         // =======================
@@ -54,10 +91,18 @@ import java.util.*;
         }
 
         public Cliente buscarClientePorDni(String dni) {
-            for (Cliente c : clientes)
-                if (c.getDni().equals(dni))
-                    return c;
-            return null;
+            Iterator var2 = this.clientes.iterator();
+
+            Cliente c;
+            do {
+                if (!var2.hasNext()) {
+                    return null;
+                }
+
+                c = (Cliente)var2.next();
+            } while(!c.getDni().equals(dni));
+
+            return c;
         }
 
         public void pagarCuota(String dni, double monto) throws FondosInsuficientesException {
@@ -74,22 +119,34 @@ import java.util.*;
         }
 
         public void mostrarClientes() {
-            if (clientes.isEmpty()) {
+            if (this.clientes.isEmpty()) {
                 System.out.println("No hay clientes registrados.");
-                return;
+            } else {
+                System.out.println("\n--- Lista de Clientes ---");
+                Iterator var1 = this.clientes.iterator();
+
+                while(var1.hasNext()) {
+                    Cliente c = (Cliente)var1.next();
+                    PrintStream var10000 = System.out;
+                    String var10001 = c.getNombre();
+                    var10000.println(var10001 + " | DNI: " + c.getDni() + " | Tipo cuota: " + String.valueOf(c.geteCuota()) + " | Saldo: $" + c.getSaldo());
+                }
             }
-            System.out.println("\n--- Lista de Clientes ---");
-            for (Cliente c : clientes)
-                System.out.println(c.getNombre() + " | DNI: " + c.getDni() +
-                        " | Tipo cuota: " + c.getCuota() + " | Saldo: $" + c.getSaldo());
+
         }
 
         public void mostrarClientesOrdenadosPorNombre() {
             System.out.println("\n--- Clientes ordenados (TreeMap) ---");
-            for (Map.Entry<String, Cliente> entry : clientesOrdenadosPorNombre.entrySet()) {
-                Cliente c = entry.getValue();
-                System.out.println(c.getNombre() + " | DNI: " + c.getDni());
+            Iterator var1 = this.clientesOrdenadosPorNombre.entrySet().iterator();
+
+            while(var1.hasNext()) {
+                Map.Entry<String, Cliente> entry = (Map.Entry)var1.next();
+                Cliente c = (Cliente)entry.getValue();
+                PrintStream var10000 = System.out;
+                String var10001 = c.getNombre();
+                var10000.println(var10001 + " | DNI: " + c.getDni());
             }
+
         }
 
         // =======================
@@ -103,13 +160,34 @@ import java.util.*;
         }
 
         public void mostrarAsistentes() {
-            if (asistentes.isEmpty()) {
+            if (this.asistentes.isEmpty()) {
                 System.out.println("No hay asistentes registrados.");
-                return;
+            } else {
+                System.out.println("\n--- Lista de Asistentes ---");
+                Iterator var1 = this.asistentes.iterator();
+
+                while(var1.hasNext()) {
+                    Asistente a = (Asistente)var1.next();
+                    PrintStream var10000 = System.out;
+                    String var10001 = a.getNombre();
+                    var10000.println(var10001 + " | DNI: " + a.getDni());
+                }
             }
-            System.out.println("\n--- Lista de Asistentes ---");
-            for (Asistente a : asistentes)
-                System.out.println(a.getNombre() + " | DNI: " + a.getDni());
+
+        }
+        public Asistente buscarAsistentePorDni(String dni) {
+            Iterator var2 = this.asistentes.iterator();
+
+            Asistente a;
+            do {
+                if (!var2.hasNext()) {
+                    return null;
+                }
+
+                a = (Asistente)var2.next();
+            } while(!a.getDni().equals(dni));
+
+            return a;
         }
 
         // =======================

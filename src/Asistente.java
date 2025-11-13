@@ -4,12 +4,12 @@ public final class Asistente extends Persona {
     private eTurno eTurno;
 
     /**   CONSTRUCTORES   **/
-    public Asistente(int id) {
-        super(id);
+    public Asistente() {
+        super();
     }
 
     public Asistente(String nombre, int edad, String dni, int id, eTurno eTurno) {
-        super(nombre, edad, dni, id);
+        super(nombre, edad, dni);
         this.eTurno = eTurno;
     }
 
@@ -25,12 +25,11 @@ public final class Asistente extends Persona {
 
     /**   METODOS   **/
 
-    @Override
     public String toString() {
-        return "Datos de Asistente{" +
-                "turno en el que trabaja =" + eTurno +
-                "} " + super.toString();
+        String var10000 = String.valueOf(this.eTurno);
+        return "Datos de Asistente{turno en el que trabaja =" + var10000 + "} " + super.toString();
     }
+
 
     @Override
     public boolean equals(Object o) {

@@ -3,12 +3,12 @@ public final class Administrador extends Persona {
     private String contraseña;
 
     /**   CONSTRUCTORES   **/
-    public Administrador(int id) {
-        super(id);
+    public Administrador() {
+        super();
     }
 
-    public Administrador(String nombre, int edad, String dni, int id, String usuario, String contraseña) {
-        super(nombre, edad, dni, id);
+    public Administrador(String nombre, int edad, String dni, String usuario, String contraseña) {
+        super(nombre, edad, dni);
         this.usuario = usuario;
         this.contraseña = contraseña;
     }

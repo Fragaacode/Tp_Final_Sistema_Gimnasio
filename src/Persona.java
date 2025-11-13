@@ -9,19 +9,17 @@ public abstract class Persona {
 
     /**   CONSTRUCTORES   **/
 
-    public Persona(int id) {
+    public Persona() {
         this.id = contador++;
     }
 
-    public Persona(String nombre, int edad, String dni, int id) {
+    public Persona(String nombre, int edad, String dni) {
         this.nombre = nombre;
         this.edad = edad;
         this.dni = dni;
         this.id = contador++;
     }
 
-    public Persona() {
-    }
 
 
     /**   GETTERS Y SETTERS   **/
