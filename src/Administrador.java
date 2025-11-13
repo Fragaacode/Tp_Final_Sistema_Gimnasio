@@ -3,12 +3,12 @@ public final class Administrador extends Persona {
     private String contraseña;
 
     /**   CONSTRUCTORES   **/
-    public Administrador(int id) {
-        super(id);
+    public Administrador() {
+
     }
 
-    public Administrador(String nombre, int edad, String dni, int id, String usuario, String contraseña) {
-        super(nombre, edad, dni, id);
+    public Administrador(String nombre, int edad, String dni, String usuario, String contraseña) {
+        super(nombre, edad, dni);
         this.usuario = usuario;
         this.contraseña = contraseña;
     }
@@ -49,4 +49,13 @@ public final class Administrador extends Persona {
         return super.hashCode();
     }
 
+    /**   SETTERS   **/
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
+    }
 }

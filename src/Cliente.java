@@ -6,12 +6,12 @@ public final class Cliente extends Persona implements iPagable {
 
 
     /**   CONSTRUCTORES   **/
-    public Cliente(int id) {
-        super(id);
+    public Cliente() {
+
     }
 
-    public Cliente(String nombre, int edad, String dni, int id, Double saldo, eCuota eCuota) {
-        super(nombre, edad, dni, id);
+    public Cliente(String nombre, int edad, String dni, Double saldo, eCuota eCuota) {
+        super(nombre, edad, dni);
         this.saldo = saldo;
         this.eCuota = eCuota;
     }
@@ -63,5 +63,4 @@ public final class Cliente extends Persona implements iPagable {
     public int hashCode() {
         return super.hashCode();
     }
-
 }
