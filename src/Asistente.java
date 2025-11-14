@@ -5,7 +5,7 @@ public final class Asistente extends Persona {
 
     /**   CONSTRUCTORES   **/
     public Asistente() {
-        super();
+
     }
 
     public Asistente(String nombre, int edad, String dni, eTurno eTurno) {

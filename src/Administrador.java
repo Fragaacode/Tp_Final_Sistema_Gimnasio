@@ -4,7 +4,7 @@ public final class Administrador extends Persona {
 
     /**   CONSTRUCTORES   **/
     public Administrador() {
-        super();
+
     }
 
     public Administrador(String nombre, int edad, String dni, String usuario, String contraseña) {

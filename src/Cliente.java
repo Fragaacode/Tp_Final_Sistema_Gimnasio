@@ -8,7 +8,7 @@ public final class Cliente extends Persona implements iPagable {
 
     /**   CONSTRUCTORES   **/
     public Cliente() {
-        super();
+
     }
 
     public Cliente(String nombre, int edad, String dni, Double saldo, eCuota eCuota) {
