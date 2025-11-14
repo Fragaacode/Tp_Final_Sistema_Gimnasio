@@ -3,7 +3,7 @@ public final class Cliente extends Persona implements iPagable {
 
     private Double saldo ;
     private eCuota eCuota;
-    private boolean activo;
+    private boolean activo=true;
 
 
     /**   CONSTRUCTORES   **/
@@ -11,11 +11,11 @@ public final class Cliente extends Persona implements iPagable {
         super();
     }
 
-    public Cliente(String nombre, int edad, String dni, Double saldo, eCuota eCuota,boolean activo) {
+    public Cliente(String nombre, int edad, String dni, Double saldo, eCuota eCuota) {
         super(nombre, edad, dni);
         this.saldo = saldo;
         this.eCuota = eCuota;
-        this.activo = activo;
+        this.activo = true;
     }
 
     /**   GETTERS AND SETTERS   **/

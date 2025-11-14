@@ -8,7 +8,7 @@ public final class Asistente extends Persona {
         super();
     }
 
-    public Asistente(String nombre, int edad, String dni, int id, eTurno eTurno) {
+    public Asistente(String nombre, int edad, String dni, eTurno eTurno) {
         super(nombre, edad, dni);
         this.eTurno = eTurno;
     }

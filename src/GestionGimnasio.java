@@ -74,6 +74,22 @@ import java.util.*;
             }
 
         }
+        public Administrador buscarAdministradorPorDni(String dni)
+        {
+            Iterator var2 = this.administradores.values().iterator();
+
+            Administrador a;
+            do {
+                if (!var2.hasNext()) {
+                    return null;
+                }
+
+                a = (Administrador)var2.next();
+            } while(!a.getDni().equals(dni));
+
+            return a;
+        }
+
 
         // =======================
         // CLIENTES
