@@ -63,7 +63,7 @@ public final class Cliente extends Persona implements iPagable {
     @Override
     public String toString() {
         String var10000 = super.toString();
-        return "Datos del Cliente: \n" + var10000 + ", saldo=" + this.saldo + ", cuota=" + String.valueOf(this.eCuota);
+        return "Datos del Cliente: \n" + var10000 + ", saldo=" + this.saldo + ", cuota="+this.eCuota.getPrecio()+", frecuencia= " + String.valueOf(this.eCuota)+", estado activo= "+isActivo();
     }
 
     @Override
