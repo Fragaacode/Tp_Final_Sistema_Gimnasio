@@ -54,9 +54,8 @@ public final class Cliente extends Persona implements iPagable {
         saldo -= eCuota.getPrecio();
         System.out.println(getNombre() +"Ha pagado la cuota de $"+ eCuota.getPrecio() + "Saldo restante"+ saldo);
     }
-    public String recargarSaldo(double nuevoSaldo) {
+    public void recargarSaldo(double nuevoSaldo) {
         this.saldo = this.saldo + nuevoSaldo;
-        return "Saldo actualizado";
     }
 
 

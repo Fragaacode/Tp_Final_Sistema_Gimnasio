@@ -11,7 +11,6 @@ public class Menu {
     public void iniciar()
     {
         agregadoDePersonas();
-        GestionGimnasio g = new GestionGimnasio();
         Scanner sc = new Scanner(System.in);
         boolean salir=false;
 
@@ -20,116 +19,265 @@ public class Menu {
 
         while(!salir)
         {
-            System.out.println("Ingrese su número de documento: ");
+            System.out.println("Ingrese su número de documento para iniciar ");
+            System.out.println("Ingrese 5 si desea cerrar el programa");
             String dni = sc.nextLine();
-            Cliente busqueda = g.buscarClientePorDni(dni);
-            Asistente buscado = g.buscarAsistentePorDni(dni);
-            Administrador buscar=g.buscarAdministradorPorDni(dni);
-
-            if(busqueda!=null){
-
+            if(dni.equals("5")){
+                System.out.println("Saliendo del programa...");
+                salir=true;
             }
+            Cliente busqueda = gestionGimnasio.buscarClientePorDni(dni);
+            Asistente buscado = gestionGimnasio.buscarAsistentePorDni(dni);
+            Administrador buscar=gestionGimnasio.buscarAdministradorPorDni(dni);
 
-            System.out.println("4-Si desea salir del programa");
-            int rol = sc.nextInt();
-            switch (rol)
+            if(busqueda!=null)
             {
-                case 1:
-                {
-                    menuCliente();
-                    break;
-                }
-                case 2:
-                {
-                    menuAsistente();
-                    break;
-                }
-                case 3:
-                {
-                    menuAdministrador();
-                    break;
-                }
-                case 4:
-                {
-                    salir=true;
-                    break;
-                }
-                default:
-                {
-                    System.out.println("Comando invalido");
-                    break;
-                }
+                menuCliente(busqueda,sc);
             }
+            else if(buscado!=null)
+            {
+                menuAsistente(buscado,sc);
+            }
+            else if(buscar!=null)
+            {
+                menuAdministrador(buscar,sc);
+            }
+            else if(!dni.equals("5"))
+            {
+                System.out.println("El Dni ingresado no esta en nuestra base de datos");
+            }
+
+
+
 
         }
         sc.close();
 
 
     }
-    public void menuCliente()
+    public void menuCliente(Cliente busqueda,Scanner sc)
     {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Ingrese su DNI");
-        String dni = sc.nextLine();
-        Cliente c =gestionGimnasio.buscarClientePorDni(dni);
-        System.out.println("Bienvenido"+c.getNombre()+", a continuacion indique que desea hacer");
+        System.out.println("Bienvenido/a"+busqueda.getNombre()+", a continuacion indique que desea hacer");
         boolean salir=false;
         while(!salir)
         {
-            System.out.println("1-Ver estado contable");
-            System.out.println("2-Pagar cuota");
-            System.out.println("3-Retroceder");
+            System.out.println("Opción 1 Consultar saldo actual");
+            System.out.println("Opción 2 Pagar cuota ");
+            System.out.println("Opción 3 Recargar saldo ");
+            System.out.println("Opción 4 Mostrar datos: ");
+            System.out.println("Opción 5 salir del menu");
             int opcion = sc.nextInt();
+            sc.nextLine();
 
             switch (opcion)
             {
                 case 1:
                 {
+                    System.out.println("Su saldo actual es de: "+ busqueda.getSaldo());
                     break;
                 }
                 case 2:
                 {
-
+                    try {
+                        gestionGimnasio.pagarCuota(busqueda);
+                    } catch (FondosInsuficientesException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
                 }
                 case 3:
                 {
+                    System.out.println("Ingrese el saldo que desea recargar: ");
+                    double recarga= sc.nextDouble();
+                    sc.nextLine();
+                    System.out.println(gestionGimnasio.recargarSaldo(busqueda,recarga));
+
+                    break;
+                }
+                case 4:
+                {
+                    System.out.println(busqueda.toString());
+                    break;
+                }
+                case 5:
+                {
+                    System.out.println("Saliendo del menu de Clientes...");
                     salir=true;
                     break;
                 }
                 default:
                 {
-                    System.out.println("Comando invalido");
+                    System.out.println("Comando invalido, intente de nuevo");
                     break;
                 }
             }
         }
     }
-    public void menuAsistente()
+    public void menuAsistente(Asistente buscado,Scanner sc)
     {
         boolean salir=false;
-        System.out.println("Indique que desea hacer");
+        System.out.println("Bienvenido/a"+buscado.getNombre()+", a continuacion indique que desea hacer");
         while(!salir)
         {
-            System.out.println("1-");
+            System.out.println("Opción 1 Ver datos Personales: ");
+            System.out.println("Opción 2 ver clientes Ordenados por nombre");
+            System.out.println("Opción 3 Ver clientes ordenados por Dni ");
+            System.out.println("Opcion 4 crear cliente");
+            System.out.println("Opcion 5 dar de baja cliente");
+            System.out.println("Opcion 6 eliminar cliente");
+            System.out.println("Opción 7 Salir del menu ");
+            int opcion = sc.nextInt();
+            sc.nextLine();
+
+            switch (opcion)
+            {
+                case 1:
+                {
+                    System.out.println(buscado.toString());
+                    break;
+                }
+                case 2:
+                    {
+                        gestionGimnasio.mostrarClientesOrdenadosPorNombre();
+                        break;
+                    }
+                case 3:
+                {
+                    gestionGimnasio.ordenarClientesPorDni();
+                    gestionGimnasio.mostrarClientes();
+                    break;
+
+                }
+                case 4:
+                {
+                    gestionGimnasio.crearNuevoCliente();
+                    break;
+                }
+                case 5:
+                {
+                    System.out.println("Ingrese el dni del cliente que desea dar de baja");
+                    String dni=sc.nextLine();
+                    Cliente baja=gestionGimnasio.buscarClientePorDni(dni);
+                    if(baja!=null){
+                        gestionGimnasio.darDeBaja(baja);
+                    }
+                    else
+                    {
+                        System.out.println("Ingreso un dni erroneo");
+                    }
+                    break;
+                }
+                case 6:
+                {
+                    System.out.println("Ingrese el dni del cliente que desea eliminar");
+                    String sacar=sc.nextLine();
+                    Cliente eliminar=gestionGimnasio.buscarClientePorDni(sacar);
+                    if(eliminar!=null)
+                    {
+                        gestionGimnasio.eliminarCliente(eliminar.getDni());
+                    }
+                    else
+                    {
+                        System.out.println("Ingreso un dni erroneo");
+                    }
+
+                    break;
+                }
+                case 7:
+                {
+                    System.out.println("Saliendo del menu de Asistente...");
+                    salir=true;
+                    break;
+                }
+                default:
+                {
+                    System.out.println("Comando invalido, intente de nuevo");
+                    break;
+                }
+            }
+
         }
     }
-    public void menuAdministrador()
+    public void menuAdministrador(Administrador buscar,Scanner sc)
     {
-        Scanner sc = new Scanner(System.in);
         System.out.println("Ingrese su usuario");
-        String user = sc.nextLine();
+        String usuario = sc.nextLine();
         System.out.println("Ingrese su contraseña");
-        String contrasenia = sc.nextLine();
+        String contraseña = sc.nextLine();
         boolean salir=false;
-        System.out.println("Indique que desea hacer");
-        while(!salir)
-        {
-            System.out.println("1-Agregar ");
+       try {
+            if (buscar.iniciarSesion(usuario,contraseña))
+            {
+                int opcion1 = 0;
+                while(!salir)
+                {
+                    System.out.println(" Menu de Administrador: ");
+                    System.out.println("Opcion 1 Mostrar datos del Admin");
+                    System.out.println("Opcion 2 Mostrar Asistentes actuales");
+                    System.out.println("Opcion 3 Eliminar Asitente");
+                    System.out.println("Opcion 4 Crear nuevo Asistente");
+                    System.out.println("Opcion 5 Crear nuevo Admin");
+                    System.out.println("Opcion 6 Mostrar Admins actuales ");
+                    System.out.println("Opcion 7 Salir");
+                    opcion1 = sc.nextInt();
+                    sc.nextLine();
+
+                    switch (opcion1){
+                        case 1:
+                        {
+                            System.out.println(buscar.toString());
+                            break;
+                        }
+                        case 2 :
+                        {
+                            gestionGimnasio.mostrarAsistentes();
+                            break;
+                        }
+                        case 3 :
+                        {
+                            System.out.println("Ingrese el dni del Asistente que desea eliminar: ");
+                            gestionGimnasio.mostrarAsistentes();
+                            String dniE = sc.nextLine();
+                            gestionGimnasio.eliminarAsistente(dniE);
+                            break;
+                        }
+                        case 4 :
+                        {
+                            gestionGimnasio.crearNuevoAsistente();
+                            break;
+                        }
+                        case 5 :
+                        {
+                            gestionGimnasio.crearNuevoAdmin();
+                            break;
+                        }
+                        case 6 :
+                        {
+                            gestionGimnasio.mostrarAdministradores();
+                            break;
+                        }
+                        case 7 :
+                        {
+                            System.out.println("Saliendo del menu de Administrador...");
+                            salir=true;
+                            break;
+                        }
+                        default:
+                        {
+                            System.out.println("Comando invalido, intente de nuevo");
+                            break;
+                        }
+                    }
+                }
+            }
         }
+        catch (UsuarioNoAutorizadoException e) {
+        System.out.println(e.getMessage());
+       }
     }
+
     public void agregadoDePersonas()
     {
-        GestionGimnasio gim = new GestionGimnasio();
         Cliente c1 = new Cliente("Agustin",26,"223456",200.0,eCuota.DIA);
         Cliente c2 = new Cliente("Agusti",26,"223457",210.0,eCuota.SEMANAL);
         Cliente c3 = new Cliente("Agust",26,"223458",220.0,eCuota.SEMANAL);
@@ -149,17 +297,19 @@ public class Menu {
 
 
 
-        gim.agregarCliente(c1);
-        gim.agregarCliente(c2);
-        gim.agregarCliente(c3);
-        gim.agregarCliente(c4);
-        gim.agregarCliente(c5);
-        gim.agregarCliente(c6);
+        gestionGimnasio.agregarCliente(c1);
+        gestionGimnasio.agregarCliente(c2);
+        gestionGimnasio.agregarCliente(c3);
+        gestionGimnasio.agregarCliente(c4);
+        gestionGimnasio.agregarCliente(c5);
+        gestionGimnasio.agregarCliente(c6);
 
-        gim.agregarAsistente(a1);
-        gim.agregarAsistente(a2);
-        gim.agregarAsistente(a3);
-        gim.agregarAsistente(a4);
-        gim.agregarAsistente(a5);
+        gestionGimnasio.agregarAsistente(a1);
+        gestionGimnasio.agregarAsistente(a2);
+        gestionGimnasio.agregarAsistente(a3);
+        gestionGimnasio.agregarAsistente(a4);
+        gestionGimnasio.agregarAsistente(a5);
+
+        gestionGimnasio.agregarAdministrador(admin);
     }
 }

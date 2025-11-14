@@ -36,12 +36,14 @@ public final class Administrador extends Persona {
     public boolean iniciarSesion(String user, String pass) throws UsuarioNoAutorizadoException{
         if (usuario.equalsIgnoreCase(user) && contraseña.equalsIgnoreCase(pass)) {
 
-            System.out.println("inicio de Sesion exitoso, Bienvenido: "+ getNombre());
+            System.out.println("Inicio de Sesion exitoso, Bienvenido: "+ getNombre());
+            return true;
         }
         else {
-            System.out.println("usuario o contraseña ingresado incorrectamente");
+            System.out.println("Usuario o contraseña ingresado incorrectamente");
+            return false;
         }
-        return false;
+
     }
     @Override
     public String toString() {
