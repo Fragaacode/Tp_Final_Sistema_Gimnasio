@@ -9,6 +9,10 @@ public abstract class Persona {
 
     /**   CONSTRUCTORES   **/
 
+    public Persona() {
+        this.id = contador++;
+    }
+
     public Persona(String nombre, int edad, String dni) {
         this.nombre = nombre;
         this.edad = edad;
@@ -16,8 +20,6 @@ public abstract class Persona {
         this.id = contador++;
     }
 
-    public Persona() {
-    }
 
 
     /**   GETTERS Y SETTERS   **/

@@ -15,22 +15,21 @@ public final class Asistente extends Persona {
 
     /**   GETTERS AND SETTERS   **/
 
-    public eTurno getTurno() {
+    public eTurno geteTurno() {
         return eTurno;
     }
 
-    public void setTurno(eTurno eTurno) {
+    public void seteTurno(eTurno eTurno) {
         this.eTurno = eTurno;
     }
 
     /**   METODOS   **/
 
-    @Override
     public String toString() {
-        return "Datos de Asistente{" +
-                "turno en el que trabaja =" + eTurno +
-                "} " + super.toString();
+        String var10000 = String.valueOf(this.eTurno);
+        return "Datos de Asistente{turno en el que trabaja =" + var10000 + "} " + super.toString();
     }
+
 
     @Override
     public boolean equals(Object o) {
