@@ -13,8 +13,17 @@ public final class Administrador extends Persona {
         this.contraseña = contraseña;
     }
 
+    public void setusuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public void setcontraseña(String contraseña) {
+        this.contraseña = contraseña;
+    }
+
     /**   GETTERS **/
     // LOS GETTERS LOS VAMOS A USAR PARA LA VALIDACION DE LAS CREDENCIALES DEL ADMIN
+
     public String getUsuario() {
         return usuario;
     }

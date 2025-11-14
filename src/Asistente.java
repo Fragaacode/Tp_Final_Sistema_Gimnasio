@@ -15,11 +15,11 @@ public final class Asistente extends Persona {
 
     /**   GETTERS AND SETTERS   **/
 
-    public eTurno getTurno() {
+    public eTurno geteTurno() {
         return eTurno;
     }
 
-    public void setTurno(eTurno eTurno) {
+    public void seteTurno(eTurno eTurno) {
         this.eTurno = eTurno;
     }
 

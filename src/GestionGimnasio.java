@@ -202,5 +202,37 @@ import java.util.*;
             clientes.sort(Comparator.comparing(Cliente::getNombre));
             System.out.println("Clientes ordenados por nombre.");
         }
+
+        public ArrayList<Cliente> getClientes() {
+            return clientes;
+        }
+
+        public void setClientes(ArrayList<Cliente> clientes) {
+            this.clientes = clientes;
+        }
+
+        public HashSet<Asistente> getAsistentes() {
+            return asistentes;
+        }
+
+        public void setAsistentes(HashSet<Asistente> asistentes) {
+            this.asistentes = asistentes;
+        }
+
+        public HashMap<String, Administrador> getAdministradores() {
+            return administradores;
+        }
+
+        public void setAdministradores(HashMap<String, Administrador> administradores) {
+            this.administradores = administradores;
+        }
+
+        public TreeMap<String, Cliente> getClientesOrdenadosPorNombre() {
+            return clientesOrdenadosPorNombre;
+        }
+
+        public void setClientesOrdenadosPorNombre(TreeMap<String, Cliente> clientesOrdenadosPorNombre) {
+            this.clientesOrdenadosPorNombre = clientesOrdenadosPorNombre;
+        }
     }
 
