@@ -2,23 +2,40 @@ import java.util.Scanner;
 
 public class Menu {
     private GestionGimnasio gestionGimnasio;
+    private GestorJSON archivos;
+    private LecturaEscrituraDeArchivo leerYescribir;
+
+
 
     public Menu() {
-        this.gestionGimnasio = new GestionGimnasio();
+        this.archivos = new GestorJSON();
+        this.leerYescribir = new LecturaEscrituraDeArchivo();
+
+        GestionGimnasio cargado = archivos.ArchivoAGimnasio("gimnasio.json");
+
+        if(cargado != null) {
+            System.out.println("Archivo cargado correctamente.");
+            this.gestionGimnasio = cargado;
+        } else {
+            System.out.println("No existe archivo. Creando uno nuevo...");
+            this.gestionGimnasio = new GestionGimnasio();
+            agregadoDePersonas();
+            archivos.gimnasioAarchivo("gimnasio.json", gestionGimnasio);
+        }
     }
 
 
     public void iniciar()
     {
-        agregadoDePersonas();
         Scanner sc = new Scanner(System.in);
         boolean salir=false;
 
-        System.out.println("--Bienvenido al Sistema del Gimnasio--");
+
 
 
         while(!salir)
         {
+            System.out.println("--Bienvenido al Sistema del Gimnasio--");
             System.out.println("Ingrese su número de documento para iniciar ");
             System.out.println("Ingrese 5 si desea cerrar el programa");
             String dni = sc.nextLine();
@@ -61,6 +78,7 @@ public class Menu {
         boolean salir=false;
         while(!salir)
         {
+            System.out.println("--Menu para Clientes--");
             System.out.println("Opción 1 Consultar saldo actual");
             System.out.println("Opción 2 Pagar cuota ");
             System.out.println("Opción 3 Recargar saldo ");
@@ -80,8 +98,10 @@ public class Menu {
                 {
                     try {
                         gestionGimnasio.pagarCuota(busqueda);
+                        archivos.sobreescribirGimnasioAarchivo("gimnasio.json", gestionGimnasio);
                     } catch (FondosInsuficientesException e) {
                         System.out.println(e.getMessage());
+
                     }
                     break;
                 }
@@ -91,6 +111,7 @@ public class Menu {
                     double recarga= sc.nextDouble();
                     sc.nextLine();
                     System.out.println(gestionGimnasio.recargarSaldo(busqueda,recarga));
+                    archivos.sobreescribirGimnasioAarchivo("gimnasio.json", gestionGimnasio);
 
                     break;
                 }
@@ -119,6 +140,7 @@ public class Menu {
         System.out.println("Bienvenido/a"+buscado.getNombre()+", a continuacion indique que desea hacer");
         while(!salir)
         {
+            System.out.println("--Menu para Asistentes--");
             System.out.println("Opción 1 Ver datos Personales: ");
             System.out.println("Opción 2 ver clientes Ordenados por nombre");
             System.out.println("Opción 3 Ver clientes ordenados por Dni ");
@@ -151,6 +173,7 @@ public class Menu {
                 case 4:
                 {
                     gestionGimnasio.crearNuevoCliente();
+                    archivos.sobreescribirGimnasioAarchivo("gimnasio.json", gestionGimnasio);
                     break;
                 }
                 case 5:
@@ -160,6 +183,7 @@ public class Menu {
                     Cliente baja=gestionGimnasio.buscarClientePorDni(dni);
                     if(baja!=null){
                         gestionGimnasio.darDeBaja(baja);
+                        archivos.sobreescribirGimnasioAarchivo("gimnasio.json", gestionGimnasio);
                     }
                     else
                     {
@@ -175,6 +199,7 @@ public class Menu {
                     if(eliminar!=null)
                     {
                         gestionGimnasio.eliminarCliente(eliminar.getDni());
+                        archivos.sobreescribirGimnasioAarchivo("gimnasio.json", gestionGimnasio);
                     }
                     else
                     {
@@ -211,7 +236,7 @@ public class Menu {
                 int opcion1 = 0;
                 while(!salir)
                 {
-                    System.out.println(" Menu de Administrador: ");
+                    System.out.println("--Menu para Administradores--");
                     System.out.println("Opcion 1 Mostrar datos del Admin");
                     System.out.println("Opcion 2 Mostrar Asistentes actuales");
                     System.out.println("Opcion 3 Eliminar Asitente");
@@ -278,24 +303,57 @@ public class Menu {
 
     public void agregadoDePersonas()
     {
-        Cliente c1 = new Cliente("Agustin",26,"223456",200.0,eCuota.DIA);
-        Cliente c2 = new Cliente("Agusti",26,"223457",210.0,eCuota.SEMANAL);
-        Cliente c3 = new Cliente("Agust",26,"223458",220.0,eCuota.SEMANAL);
-        Cliente c4 = new Cliente("Agus",26,"223459",230.0,eCuota.MENSUAL);
-        Cliente c5 = new Cliente("Agu",26,"223450",240.0,eCuota.DIA);
-        Cliente c6 = new Cliente("Agustinn",26,"223455",250.0,eCuota.MENSUAL);
 
+        ///HARDCODEO DE AGREGADO////
 
-        Asistente a1 = new Asistente("Armando",33,"11123",eTurno.MANIANA);
-        Asistente a2 = new Asistente("Armando",33,"11124",eTurno.TARDE);
-        Asistente a3 = new Asistente("Armando",33,"11125",eTurno.NOCHE);
-        Asistente a4 = new Asistente("Armando",33,"11126",eTurno.MANIANA);
-        Asistente a5 = new Asistente("Armando",33,"11127",eTurno.MANIANA);
+        Cliente c1 = new Cliente("Agustin",18,"223456",200.0,eCuota.DIA);
+        Cliente c2 = new Cliente("Franco",38,"223457",210.0,eCuota.SEMANAL);
+        Cliente c3 = new Cliente("Marcos",20,"223458",220.0,eCuota.SEMANAL);
+        Cliente c4 = new Cliente("Juan",28,"223459",230.0,eCuota.MENSUAL);
+        Cliente c5 = new Cliente("Sofia",30,"223450",240.0,eCuota.DIA);
+        Cliente c6 = new Cliente("Facundo",23,"223455",250.0,eCuota.MENSUAL);
+        Cliente c7 = new Cliente("Juan Pérez", 25, "40123456", 15000.0, eCuota.MENSUAL);
+        Cliente c8 = new Cliente("María López", 32, "38987654", 22000.0, eCuota.SEMANAL);
+        Cliente c9 = new Cliente("Carlos Gómez", 28, "42111222", 8000.0, eCuota.SEMANAL);
+        Cliente c10 = new Cliente("Lucía Fernández", 30, "40999888", 12000.0, eCuota.MENSUAL);
+        Cliente c11 = new Cliente("Matías Rojas", 22, "43123412", 5000.0, eCuota.DIA);
+        Cliente c12 = new Cliente("Agustina Romero", 27, "37123456", 18000.0, eCuota.DIA);
+        Cliente c13 = new Cliente("Tomás Benítez", 35, "35991234", 9500.0, eCuota.MENSUAL);
+        Cliente c14 = new Cliente("Valentina Suárez", 26, "42127890", 7000.0, eCuota.SEMANAL);
+        Cliente c15 = new Cliente("Santiago Castro", 29, "40112233", 16000.0, eCuota.MENSUAL);
+        Cliente c16 = new Cliente("Florencia Díaz", 24, "39123455", 6000.0, eCuota.DIA);
 
-        Administrador admin =new Administrador("Admin", 22, "2345", "Addminn","admin22");
+        Asistente a1 = new Asistente("Armando",40,"11123",eTurno.MANIANA);
+        Asistente a2 = new Asistente("Juliana",36,"11124",eTurno.TARDE);
+        Asistente a3 = new Asistente("Miranda",27,"11125",eTurno.NOCHE);
+        Asistente a4 = new Asistente("Pedro",25,"11126",eTurno.MANIANA);
+        Asistente a5 = new Asistente("Sebastian",19,"11127",eTurno.MANIANA);
+        Asistente a6 = new Asistente("Julián Torres", 29, "33123456", eTurno.MANIANA);
+        Asistente a7 = new Asistente("Brenda Acosta", 34, "34987654", eTurno.TARDE);
+        Asistente a8 = new Asistente("Nicolás Herrera", 26, "38111222", eTurno.NOCHE);
+        Asistente a9 = new Asistente("Pamela Ruiz", 31, "36999888", eTurno.TARDE);
+        Asistente a10 = new Asistente("Hernán López", 28, "35123412", eTurno.MANIANA);
+        Asistente a11= new Asistente("Marina Duarte", 25, "37123456", eTurno.NOCHE);
+        Asistente a12 = new Asistente("Diego Molina", 33, "35991234", eTurno.MANIANA);
+        Asistente a13 = new Asistente("Carolina Sosa", 27, "38127890", eTurno.TARDE);
+        Asistente a14 = new Asistente("Pablo Ibáñez", 30, "36112233", eTurno.NOCHE);
+        Asistente a15 = new Asistente("Rocío Medina", 24, "35123455", eTurno.MANIANA);
 
-
-
+        Administrador admin =new Administrador("Mateo", 22, "44784019", "Addminn","admin22");
+        Administrador admin1 = new Administrador("Juan Pérez", 30, "12345678", "juanp", "pass123");
+        Administrador admin2 = new Administrador("María Gómez", 28, "87654321", "mariag", "abc456");
+        Administrador admin3 = new Administrador("Carlos Díaz", 35, "11223344", "carlosd", "qwerty");
+        Administrador admin4 = new Administrador("Laura Fernández", 26, "44332211", "lauraf", "xyz789");
+        Administrador admin5 = new Administrador("Pedro Martínez", 40, "55667788", "pedrom", "admin123");
+        Administrador admin6 = new Administrador("Sofía López", 32, "88776655", "sofial", "123abc");
+        Administrador admin7 = new Administrador("Andrés Torres", 29, "99887766", "andrest", "pass456");
+        Administrador admin8 = new Administrador("Valentina Rojas", 31, "66554433", "valentar", "xyz123");
+        Administrador admin9 = new Administrador("Miguel Sánchez", 38, "33445566", "miguels", "admin456");
+        Administrador admin10 = new Administrador("Camila Ortiz", 27, "77665544", "camilao", "pass789");
+        Administrador admin11 = new Administrador("Fernando Castro", 36, "22113344", "fernandoc", "abc123");
+        Administrador admin12 = new Administrador("Isabella Herrera", 25, "33442211", "isabellah", "qwe789");
+        Administrador admin13 = new Administrador("Diego Ramírez", 33, "55664433", "diegor", "123xyz");
+        Administrador admin14 = new Administrador("Natalia Vargas", 30, "77889900", "nataliav", "pass321");
 
         gestionGimnasio.agregarCliente(c1);
         gestionGimnasio.agregarCliente(c2);
@@ -303,13 +361,67 @@ public class Menu {
         gestionGimnasio.agregarCliente(c4);
         gestionGimnasio.agregarCliente(c5);
         gestionGimnasio.agregarCliente(c6);
+        gestionGimnasio.agregarCliente(c7);
+        gestionGimnasio.agregarCliente(c8);
+        gestionGimnasio.agregarCliente(c9);
+        gestionGimnasio.agregarCliente(c10);
+        gestionGimnasio.agregarCliente(c11);
+        gestionGimnasio.agregarCliente(c12);
+        gestionGimnasio.agregarCliente(c13);
+        gestionGimnasio.agregarCliente(c14);
+        gestionGimnasio.agregarCliente(c15);
+        gestionGimnasio.agregarCliente(c16);
 
-        gestionGimnasio.agregarAsistente(a1);
-        gestionGimnasio.agregarAsistente(a2);
-        gestionGimnasio.agregarAsistente(a3);
-        gestionGimnasio.agregarAsistente(a4);
-        gestionGimnasio.agregarAsistente(a5);
+        leerYescribir.guardar("Clientes",archivos.serializarCliente(c1));
+        leerYescribir.guardar("Clientes",archivos.serializarCliente(c2));
+        leerYescribir.guardar("Clientes",archivos.serializarCliente(c3));
+        leerYescribir.guardar("Clientes",archivos.serializarCliente(c4));
+        leerYescribir.guardar("Clientes",archivos.serializarCliente(c5));
+        leerYescribir.guardar("Clientes",archivos.serializarCliente(c6));
+        leerYescribir.guardar("Clientes",archivos.serializarCliente(c7));
+        leerYescribir.guardar("Clientes",archivos.serializarCliente(c8));
+        leerYescribir.guardar("Clientes", archivos.serializarCliente(c9));
+        leerYescribir.guardar("Clientes",archivos.serializarCliente(c10));
+        leerYescribir.guardar("Clientes", archivos.serializarCliente(c11));
+        leerYescribir.guardar("Clientes",archivos.serializarCliente(c12));
+        leerYescribir.guardar("Clientes",archivos.serializarCliente(c13));
+        leerYescribir.guardar("Clientes",archivos.serializarCliente(c14));
+        leerYescribir.guardar("Clientes",archivos.serializarCliente(c15));
 
-        gestionGimnasio.agregarAdministrador(admin);
+
+        leerYescribir.guardar("Asistentes",archivos.serializarAsistente(a1));
+        leerYescribir.guardar("Asistentes",archivos.serializarAsistente(a2));
+        leerYescribir.guardar("Asistentes",archivos.serializarAsistente(a3));
+        leerYescribir.guardar("Asistentes",archivos.serializarAsistente(a4));
+        leerYescribir.guardar("Asistentes",archivos.serializarAsistente(a5));
+        leerYescribir.guardar("Asistentes",archivos.serializarAsistente(a6));
+        leerYescribir.guardar("Asistentes",archivos.serializarAsistente(a7));
+        leerYescribir.guardar("Asistentes",archivos.serializarAsistente(a8));
+        leerYescribir.guardar("Asistentes",archivos.serializarAsistente(a9));
+        leerYescribir.guardar("Asistentes",archivos.serializarAsistente(a10));
+        leerYescribir.guardar("Asistentes",archivos.serializarAsistente(a11));
+        leerYescribir.guardar("Asistentes",archivos.serializarAsistente(a12));
+        leerYescribir.guardar("Asistentes",archivos.serializarAsistente(a13));
+        leerYescribir.guardar("Asistentes", archivos.serializarAsistente(a14));
+        leerYescribir.guardar("Asistentes",archivos.serializarAsistente(a15));
+
+        leerYescribir.guardar("Administradores",archivos.serializarAdministrador(admin));
+        leerYescribir.guardar("Administradores", archivos.serializarAdministrador(admin1));
+        leerYescribir.guardar("Administradores",archivos.serializarAdministrador(admin2));
+        leerYescribir.guardar("Administradores",archivos.serializarAdministrador(admin3));
+        leerYescribir.guardar("Administradores",archivos.serializarAdministrador(admin4));
+        leerYescribir.guardar("Administradores",archivos.serializarAdministrador(admin5));
+        leerYescribir.guardar("Administradores",archivos.serializarAdministrador(admin6));
+        leerYescribir.guardar("Administradores",archivos.serializarAdministrador(admin6));
+        leerYescribir.guardar("Administradores",archivos.serializarAdministrador(admin8));
+        leerYescribir.guardar("Administradores",archivos.serializarAdministrador(admin9));
+        leerYescribir.guardar("Administradores",archivos.serializarAdministrador(admin10));
+        leerYescribir.guardar("Administradores",archivos.serializarAdministrador(admin11));
+        leerYescribir.guardar("Administradores",archivos.serializarAdministrador(admin12));
+        leerYescribir.guardar("Administradores",archivos.serializarAdministrador(admin13));
+        leerYescribir.guardar("Administradores",archivos.serializarAdministrador(admin14));
+
+
+
     }
 }

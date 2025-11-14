@@ -3,6 +3,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -68,11 +69,18 @@ public class GestorJSON {
 
     public GestionGimnasio ArchivoAGimnasio(String nombreArchivo) {
         GestionGimnasio gym = null;
-        JSONTokener tokener = LecturaEscrituraDeArchivo.leer(nombreArchivo);
+
+        File archivo = new File(nombreArchivo);
+        if (!archivo.exists()) {
+            System.out.println("Archivo no encontrado: se creará uno nuevo.");
+            return null;
+        }
         try {
+            JSONTokener tokener = LecturaEscrituraDeArchivo.leer(nombreArchivo);
             gym = deserializarGimnasio(new JSONObject(tokener));
         } catch (JSONException e) {
             e.printStackTrace();
+
         }
         return gym;
     }
@@ -144,7 +152,7 @@ public class GestorJSON {
             jsonObject = new JSONObject();
             jsonObject = serializarPersona(c);
             jsonObject.put("saldo", c.getSaldo());
-            jsonObject.put("eCuota", c.getCuota());
+            jsonObject.put("eCuota", c.geteCuota());
             jsonObject.put("activo", c.isActivo());
         }catch (JSONException e){
             e.printStackTrace();
@@ -197,7 +205,7 @@ public class GestorJSON {
         try{
             jsonObject = new JSONObject();
             jsonObject = serializarPersona(as);
-            jsonObject.put("eTurno", as.getTurno());
+            jsonObject.put("eTurno", as.geteTurno());
         }catch (JSONException e){
             e.printStackTrace();
         }
@@ -256,7 +264,7 @@ public class GestorJSON {
             auxDeserializarPersona(c, jsonObject);
 
             c.setSaldo(jsonObject.getDouble("saldo"));
-            c.setCuota(eCuota.valueOf(jsonObject.getString("eCuota").toUpperCase()));
+            c.seteCuota(eCuota.valueOf(jsonObject.getString("eCuota").toUpperCase()));
             c.setActivo(jsonObject.getBoolean("activo"));
 
         }catch (JSONException e){
@@ -311,7 +319,7 @@ public class GestorJSON {
         try {
             auxDeserializarPersona(a, jsonObject);
 
-            a.setTurno(eTurno.valueOf(jsonObject.getString("eTurno").toUpperCase()));
+            a.seteTurno(eTurno.valueOf(jsonObject.getString("eTurno").toUpperCase()));
 
         }catch (JSONException e){
             e.printStackTrace();
