@@ -5,21 +5,21 @@ public final class Asistente extends Persona {
 
     /**   CONSTRUCTORES   **/
     public Asistente() {
-        super();
+
     }
 
-    public Asistente(String nombre, int edad, String dni, int id, eTurno eTurno) {
+    public Asistente(String nombre, int edad, String dni, eTurno eTurno) {
         super(nombre, edad, dni);
         this.eTurno = eTurno;
     }
 
     /**   GETTERS AND SETTERS   **/
 
-    public eTurno getTurno() {
+    public eTurno geteTurno() {
         return eTurno;
     }
 
-    public void setTurno(eTurno eTurno) {
+    public void seteTurno(eTurno eTurno) {
         this.eTurno = eTurno;
     }
 

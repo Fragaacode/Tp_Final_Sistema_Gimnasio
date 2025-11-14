@@ -4,7 +4,7 @@ public final class Administrador extends Persona {
 
     /**   CONSTRUCTORES   **/
     public Administrador() {
-        super();
+
     }
 
     public Administrador(String nombre, int edad, String dni, String usuario, String contraseña) {
@@ -13,8 +13,17 @@ public final class Administrador extends Persona {
         this.contraseña = contraseña;
     }
 
+    public void setusuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public void setcontraseña(String contraseña) {
+        this.contraseña = contraseña;
+    }
+
     /**   GETTERS **/
     // LOS GETTERS LOS VAMOS A USAR PARA LA VALIDACION DE LAS CREDENCIALES DEL ADMIN
+
     public String getUsuario() {
         return usuario;
     }
@@ -27,12 +36,14 @@ public final class Administrador extends Persona {
     public boolean iniciarSesion(String user, String pass) throws UsuarioNoAutorizadoException{
         if (usuario.equalsIgnoreCase(user) && contraseña.equalsIgnoreCase(pass)) {
 
-            System.out.println("inicio de Sesion exitoso, Bienvenido: "+ getNombre());
+            System.out.println("Inicio de Sesion exitoso, Bienvenido: "+ getNombre());
+            return true;
         }
         else {
-            System.out.println("usuario o contraseña ingresado incorrectamente");
+            System.out.println("Usuario o contraseña ingresado incorrectamente");
+            return false;
         }
-        return false;
+
     }
     @Override
     public String toString() {
