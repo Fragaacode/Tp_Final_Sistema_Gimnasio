@@ -24,35 +24,6 @@ public class GestorJSON {
         LecturaEscrituraDeArchivo.sobreEscribir(nombreArchivo, serializarGimnasio(gym));
     }
 
-    //GUARDADO DE LISTAS//
-
-    public void guardarClientes(String nombreArchivo, GestionGimnasio gym){
-        LecturaEscrituraDeArchivo.guardar(nombreArchivo, serializarListaClientes(gym.getClientes()));
-    }
-
-    public void guardarAsistentes(String nombreArchivo, GestionGimnasio gym){
-        LecturaEscrituraDeArchivo.guardar(nombreArchivo, serializarSetAsistentes(gym.getAsistentes()));
-    }
-
-    public void guardarAdministradores(String nombreArchivo, GestionGimnasio gym){
-        LecturaEscrituraDeArchivo.guardar(nombreArchivo, serializarMapAdministrador(gym.getAdministradores()));
-    }
-
-    /// /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    //SOBRE ESCRITURA DE LISTAS
-
-    public void sobreEscribirListaClientes(String nombreArchivo, GestionGimnasio gym){
-        LecturaEscrituraDeArchivo.sobreEscribir(nombreArchivo, serializarListaClientes(gym.getClientes()));
-    }
-
-    public void sobreEscribirListaAsistentes(String nombreArchivo, GestionGimnasio gym){
-        LecturaEscrituraDeArchivo.sobreEscribir(nombreArchivo, serializarSetAsistentes(gym.getAsistentes()));
-    }
-
-    public void sobreEscribirListaAdministradores(String nombreArchivo, GestionGimnasio gym){
-        LecturaEscrituraDeArchivo.sobreEscribir(nombreArchivo, serializarMapAdministrador(gym.getAdministradores()));
-    }
 
     /// /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
