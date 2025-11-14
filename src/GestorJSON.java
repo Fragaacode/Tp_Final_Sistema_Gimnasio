@@ -20,6 +20,10 @@ public class GestorJSON {
         LecturaEscrituraDeArchivo.guardar(nombreArchivo, serializarGimnasio(gym));
     }
 
+    public void sobreescribirGimnasioAarchivo(String nombreArchivo, GestionGimnasio gym){
+        LecturaEscrituraDeArchivo.sobreEscribir(nombreArchivo, serializarGimnasio(gym));
+    }
+
     //GUARDADO DE LISTAS//
 
     public void guardarClientes(String nombreArchivo, GestionGimnasio gym){
@@ -55,33 +59,40 @@ public class GestorJSON {
     //GUARDADO INDIVIDUAL
 
     public void guardar(String nombreArchivo, Cliente cliente){
-        LecturaEscrituraDeArchivo.guardar(nombreArchivo, serializarCliente(cliente));
+        GestionGimnasio gim = null;
+        JSONTokener tokener = LecturaEscrituraDeArchivo.leer(nombreArchivo);
+        try {
+            gim = deserializarGimnasio(new JSONObject(tokener));
+            gim.agregarCliente(cliente);
+            LecturaEscrituraDeArchivo.sobreEscribir(nombreArchivo, serializarGimnasio(gim));
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
     }
 
     public void guardar(String nombreArchivo, Asistente asistente){
-        LecturaEscrituraDeArchivo.guardar(nombreArchivo, serializarAsistente(asistente));
+        GestionGimnasio gim = null;
+        JSONTokener tokener = LecturaEscrituraDeArchivo.leer(nombreArchivo);
+        try {
+            gim = deserializarGimnasio(new JSONObject(tokener));
+            gim.agregarAsistente(asistente);
+            LecturaEscrituraDeArchivo.sobreEscribir(nombreArchivo, serializarGimnasio(gim));
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
     }
     public void guardar(String nombreArchivo, Administrador administrador){
-        LecturaEscrituraDeArchivo.guardar(nombreArchivo, serializarAdministrador(administrador));
+        GestionGimnasio gim = null;
+        JSONTokener tokener = LecturaEscrituraDeArchivo.leer(nombreArchivo);
+        try {
+            gim = deserializarGimnasio(new JSONObject(tokener));
+            gim.agregarAdministrador(administrador);
+            LecturaEscrituraDeArchivo.sobreEscribir(nombreArchivo, serializarGimnasio(gim));
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
     }
 
-    /// /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    //SOBRE ESCRITURA INDIVIDUAL
-
-    public void sobreEscribir(String nombreArchivo, Cliente cliente){
-        LecturaEscrituraDeArchivo.sobreEscribir(nombreArchivo, serializarCliente(cliente));
-    }
-
-    public void sobreEscribir(String nombreArchivo, Asistente asistente){
-        LecturaEscrituraDeArchivo.sobreEscribir(nombreArchivo, serializarAsistente(asistente));
-    }
-
-    public void sobreEscribir(String nombreArchivo, Administrador administrador){
-        LecturaEscrituraDeArchivo.sobreEscribir(nombreArchivo, serializarAdministrador(administrador));
-    }
-
-    /// /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
     public GestionGimnasio ArchivoAGimnasio(String nombreArchivo) {
@@ -94,8 +105,6 @@ public class GestorJSON {
         }
         return gym;
     }
-
-
 
 
     public JSONObject serializarGimnasio(GestionGimnasio gimnasio){
