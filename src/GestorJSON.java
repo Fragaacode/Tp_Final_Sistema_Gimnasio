@@ -145,6 +145,7 @@ public class GestorJSON {
             jsonObject = serializarPersona(c);
             jsonObject.put("saldo", c.getSaldo());
             jsonObject.put("eCuota", c.getCuota());
+            jsonObject.put("activo", c.isActivo());
         }catch (JSONException e){
             e.printStackTrace();
         }
@@ -256,6 +257,7 @@ public class GestorJSON {
 
             c.setSaldo(jsonObject.getDouble("saldo"));
             c.setCuota(eCuota.valueOf(jsonObject.getString("eCuota").toUpperCase()));
+            c.setActivo(jsonObject.getBoolean("activo"));
 
         }catch (JSONException e){
             e.printStackTrace();
