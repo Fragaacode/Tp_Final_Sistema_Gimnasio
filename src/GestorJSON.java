@@ -232,6 +232,9 @@ public class GestorJSON {
 
     public void auxDeserializarPersona(Persona p, JSONObject jObject){
         try{
+            if (jObject.has("id")){
+                p.setId(jObject.getInt("id"));
+            }
             if (jObject.has("nombre")){
                 p.setNombre(jObject.getString("nombre"));
             }

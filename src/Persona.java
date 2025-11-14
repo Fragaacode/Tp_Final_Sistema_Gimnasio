@@ -45,11 +45,11 @@ public abstract class Persona {
         this.dni = dni;
     }
 
-    /**   GETEER DE ID SIN SETTER   **/
     public int getId() {
         return id;
     }
 
+    public void setId(int id) { this.id = id; }
 
     /**   METODOS   **/
 
