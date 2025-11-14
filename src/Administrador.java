@@ -60,4 +60,13 @@ public final class Administrador extends Persona {
         return super.hashCode();
     }
 
+    /**   SETTERS   **/
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
+    }
 }

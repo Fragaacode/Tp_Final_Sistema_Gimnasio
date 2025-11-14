@@ -1,10 +1,13 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.TreeMap;
+
 
 public class GestorJSON {
     public GestorJSON(){}
@@ -17,83 +20,62 @@ public class GestorJSON {
         LecturaEscrituraDeArchivo.guardar(nombreArchivo, serializarGimnasio(gym));
     }
 
-    //GUARDADO DE LISTAS//
-
-    public void guardarClientes(String nombreArchivo, GestionGimnasio gym){
-        LecturaEscrituraDeArchivo.guardar(nombreArchivo, serializarListaClientes(gym.getClientes()));
+    public void sobreescribirGimnasioAarchivo(String nombreArchivo, GestionGimnasio gym){
+        LecturaEscrituraDeArchivo.sobreEscribir(nombreArchivo, serializarGimnasio(gym));
     }
 
-    public void guardarAsistentes(String nombreArchivo, GestionGimnasio gym){
-        LecturaEscrituraDeArchivo.guardar(nombreArchivo, serializarSetAsistentes(gym.getAsistentes()));
-    }
-
-    public void guardarAdministradores(String nombreArchivo, GestionGimnasio gym){
-        LecturaEscrituraDeArchivo.guardar(nombreArchivo, serializarMapAdministrador(gym.getAdministradores()));
-    }
-
-    /// /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    //SOBRE ESCRITURA DE LISTAS
-
-    public void sobreEscribirListaClientes(String nombreArchivo, GestionGimnasio gym){
-        LecturaEscrituraDeArchivo.sobreEscribir(nombreArchivo, serializarListaClientes(gym.getClientes()));
-    }
-
-    public void sobreEscribirListaAsistentes(String nombreArchivo, GestionGimnasio gym){
-        LecturaEscrituraDeArchivo.sobreEscribir(nombreArchivo, serializarSetAsistentes(gym.getAsistentes()));
-    }
-
-    public void sobreEscribirListaAdministradores(String nombreArchivo, GestionGimnasio gym){
-        LecturaEscrituraDeArchivo.sobreEscribir(nombreArchivo, serializarMapAdministrador(gym.getAdministradores()));
-    }
 
     /// /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     //GUARDADO INDIVIDUAL
 
     public void guardar(String nombreArchivo, Cliente cliente){
-        LecturaEscrituraDeArchivo.guardar(nombreArchivo, serializarCliente(cliente));
+        GestionGimnasio gim = null;
+        JSONTokener tokener = LecturaEscrituraDeArchivo.leer(nombreArchivo);
+        try {
+            gim = deserializarGimnasio(new JSONObject(tokener));
+            gim.agregarCliente(cliente);
+            LecturaEscrituraDeArchivo.sobreEscribir(nombreArchivo, serializarGimnasio(gim));
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
     }
 
     public void guardar(String nombreArchivo, Asistente asistente){
-        LecturaEscrituraDeArchivo.guardar(nombreArchivo, serializarAsistente(asistente));
-    }
-    public void guardar(String nombreArchivo, Administrador administrador){
-        LecturaEscrituraDeArchivo.guardar(nombreArchivo, serializarAdministrador(administrador));
-    }
-
-    /// /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    //SOBRE ESCRITURA INDIVIDUAL
-
-    public void sobreEscribir(String nombreArchivo, Cliente cliente){
-        LecturaEscrituraDeArchivo.sobreEscribir(nombreArchivo, serializarCliente(cliente));
-    }
-
-    public void sobreEscribir(String nombreArchivo, Asistente asistente){
-        LecturaEscrituraDeArchivo.sobreEscribir(nombreArchivo, serializarAsistente(asistente));
-    }
-
-    public void sobreEscribir(String nombreArchivo, Administrador administrador){
-        LecturaEscrituraDeArchivo.sobreEscribir(nombreArchivo, serializarAdministrador(administrador));
-    }
-
-    /// /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-    /*public GestionGimnasio ArchivoAGimnasio(String nombreArchivo) {
-        GestionGimnasio gym = new GestionGimnasio();
+        GestionGimnasio gim = null;
         JSONTokener tokener = LecturaEscrituraDeArchivo.leer(nombreArchivo);
         try {
-            GestionGimnasio listasRecibida = deserializarListaClientes(new JSONArray(tokener));
-            lista.setClientes();
+            gim = deserializarGimnasio(new JSONObject(tokener));
+            gim.agregarAsistente(asistente);
+            LecturaEscrituraDeArchivo.sobreEscribir(nombreArchivo, serializarGimnasio(gim));
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
+    public void guardar(String nombreArchivo, Administrador administrador){
+        GestionGimnasio gim = null;
+        JSONTokener tokener = LecturaEscrituraDeArchivo.leer(nombreArchivo);
+        try {
+            gim = deserializarGimnasio(new JSONObject(tokener));
+            gim.agregarAdministrador(administrador);
+            LecturaEscrituraDeArchivo.sobreEscribir(nombreArchivo, serializarGimnasio(gim));
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
+
+
+
+    public GestionGimnasio ArchivoAGimnasio(String nombreArchivo) {
+        GestionGimnasio gym = null;
+        JSONTokener tokener = LecturaEscrituraDeArchivo.leer(nombreArchivo);
+        try {
+            gym = deserializarGimnasio(new JSONObject(tokener));
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return lista;
-    }*/
-
-
+        return gym;
+    }
 
 
     public JSONObject serializarGimnasio(GestionGimnasio gimnasio){
@@ -107,6 +89,9 @@ public class GestorJSON {
 
             JSONArray setAsistentes = serializarSetAsistentes(gimnasio.getAsistentes());
             gym.put("asistentes", setAsistentes);
+
+            JSONArray treeClientes = serializarTreeMapClientes(gimnasio.getClientesOrdenadosPorNombre());
+            gym.put("clientesOrdenadosPorNombre", treeClientes);
         }catch (JSONException e){
             e.printStackTrace();
         }
@@ -129,11 +114,13 @@ public class GestorJSON {
             HashSet<Asistente> setAsistente = deserializarSetAsistente(asistentesJSON);
             gimnasio.setAsistentes(setAsistente);
 
+            JSONArray clientesOrdenadosJSON = (JSONArray) jsonObject.get("clientesOrdenadosPorNombre");
+            TreeMap<String, Cliente> treeClientesOrdenados = deserialiarTreeMapClientes(clientesOrdenadosJSON);
+            gimnasio.setClientesOrdenadosPorNombre(treeClientesOrdenados);
+
         }catch (JSONException e){
             e.printStackTrace();
         }
-
-
         return gimnasio;
     }
 
@@ -157,7 +144,8 @@ public class GestorJSON {
             jsonObject = new JSONObject();
             jsonObject = serializarPersona(c);
             jsonObject.put("saldo", c.getSaldo());
-            jsonObject.put("tipoCuota", c.geteCuota());
+            jsonObject.put("eCuota", c.getCuota());
+            jsonObject.put("activo", c.isActivo());
         }catch (JSONException e){
             e.printStackTrace();
         }
@@ -183,7 +171,7 @@ public class GestorJSON {
             jsonObject = new JSONObject();
             jsonObject = serializarPersona(a);
             jsonObject.put("usuario", a.getUsuario());
-            jsonObject.put("contrasenia", a.getContraseña());
+            jsonObject.put("contraseña", a.getContraseña());
         }catch (JSONException e){
             e.printStackTrace();
         }
@@ -209,18 +197,18 @@ public class GestorJSON {
         try{
             jsonObject = new JSONObject();
             jsonObject = serializarPersona(as);
-            jsonObject.put("Turno", as.geteTurno());
+            jsonObject.put("eTurno", as.getTurno());
         }catch (JSONException e){
             e.printStackTrace();
         }
         return jsonObject;
     }
 
-    public JSONArray serializarSetAsistentes(HashSet<Asistente> aSet){
+    public JSONArray serializarSetAsistentes(HashSet<Asistente> setA){
         JSONArray jsonSet = null;
         try {
             jsonSet = new JSONArray();
-            for (Asistente as : aSet){
+            for (Asistente as : setA){
                 jsonSet.put(serializarAsistente(as));
             }
         }catch (JSONException e){
@@ -229,8 +217,25 @@ public class GestorJSON {
         return jsonSet;
     }
 
+    public JSONArray serializarTreeMapClientes(TreeMap<String, Cliente> treeC){
+        JSONArray jsonTree = null;
+        try {
+            jsonTree = new JSONArray();
+            for (String key : treeC.keySet()){
+                Cliente c = treeC.get(key);
+                jsonTree.put(serializarCliente(c));
+            }
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+        return jsonTree;
+    }
+
     public void auxDeserializarPersona(Persona p, JSONObject jObject){
         try{
+            if (jObject.has("id")){
+                p.setId(jObject.getInt("id"));
+            }
             if (jObject.has("nombre")){
                 p.setNombre(jObject.getString("nombre"));
             }
@@ -251,7 +256,8 @@ public class GestorJSON {
             auxDeserializarPersona(c, jsonObject);
 
             c.setSaldo(jsonObject.getDouble("saldo"));
-            c.seteCuota(eCuota.valueOf(jsonObject.getString("tipoCuota")));
+            c.setCuota(eCuota.valueOf(jsonObject.getString("eCuota").toUpperCase()));
+            c.setActivo(jsonObject.getBoolean("activo"));
 
         }catch (JSONException e){
             e.printStackTrace();
@@ -277,8 +283,8 @@ public class GestorJSON {
         try {
             auxDeserializarPersona(a,jsonObject);
 
-            a.setusuario(jsonObject.getString("Usuario"));
-            a.setcontraseña(jsonObject.getString("Contraseña"));
+            a.setUsuario(jsonObject.getString("usuario"));
+            a.setContraseña(jsonObject.getString("contraseña"));
 
         }catch (JSONException e){
             e.printStackTrace();
@@ -305,7 +311,7 @@ public class GestorJSON {
         try {
             auxDeserializarPersona(a, jsonObject);
 
-            a.seteTurno(eTurno.valueOf(jsonObject.getString("Turno")));
+            a.setTurno(eTurno.valueOf(jsonObject.getString("eTurno").toUpperCase()));
 
         }catch (JSONException e){
             e.printStackTrace();
@@ -324,7 +330,29 @@ public class GestorJSON {
             e.printStackTrace();
         }
         return a;
+    }
 
-
+    public TreeMap<String, Cliente> deserialiarTreeMapClientes(JSONArray jsonArray){
+        TreeMap<String, Cliente> t = new TreeMap<>();
+        try{
+            for (int i = 0; i < jsonArray.length(); i++){
+                Cliente c = deserializarCliente(jsonArray.getJSONObject(i));
+                String key = c.getDni();
+                t.put(key, c);
+            }
+        }catch (JSONException e){
+            e.printStackTrace();
         }
+        return t;
+    }
 }
+
+
+
+
+
+
+
+
+
+

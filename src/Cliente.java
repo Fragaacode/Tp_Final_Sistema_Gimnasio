@@ -75,5 +75,4 @@ public final class Cliente extends Persona implements iPagable {
     public int hashCode() {
         return super.hashCode();
     }
-
 }

@@ -1,4 +1,3 @@
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+
 public class LecturaEscrituraDeArchivo {
 
     public static void guardar(String nombreArchivo, JSONObject jsonObject){
