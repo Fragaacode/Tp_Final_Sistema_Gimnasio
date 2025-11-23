@@ -10,63 +10,43 @@ import java.io.IOException;
 
 public class LecturaEscrituraDeArchivo {
 
-    public static void guardar(String nombreArchivo, JSONObject jsonObject){
-        try{
-            FileWriter fileWriter = new FileWriter(nombreArchivo, true);
-
-            fileWriter.write(jsonObject.toString(4));
-
-            fileWriter.close();
-        }catch (IOException e){
+    // Guarda un JSONObject (reemplazando el contenido)
+    public static void guardar(JSONObject jsonObject, String nombreArchivo){
+        try (FileWriter fileWriter = new FileWriter(nombreArchivo)) {
+            fileWriter.write(jsonObject.toString(4)); // indentación 4 espacios
+        } catch (IOException e){
             e.printStackTrace();
         }
     }
 
-    public static void guardar(String nombreArchivo, JSONArray jsonArray){
-        try {
-            FileWriter fileWriter = new FileWriter(nombreArchivo, true);
-
+    // Guarda un JSONArray (reemplazando el contenido)
+    public static void guardar(JSONArray jsonArray, String nombreArchivo){
+        try (FileWriter fileWriter = new FileWriter(nombreArchivo)) {
             fileWriter.write(jsonArray.toString(4));
-
-            fileWriter.close();
-        }catch (IOException e){
+        } catch (IOException e){
             e.printStackTrace();
         }
     }
 
-    public static void sobreEscribir(String nombreArchivo, JSONObject jsonObject){
-        try{
-            FileWriter fileWriter = new FileWriter(nombreArchivo);
-
-            fileWriter.write(jsonObject.toString(4));
-
-            fileWriter.close();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
+    // Sobrescribir es lo mismo que guardar en esta versión
+    public static void sobreEscribir(JSONObject jsonObject, String nombreArchivo){
+        guardar(jsonObject, nombreArchivo);
     }
 
-    public static void sobreEscribir(String nombreArchivo, JSONArray jsonArray){
-        try{
-            FileWriter fileWriter = new FileWriter(nombreArchivo);
-
-            fileWriter.write(jsonArray.toString(4));
-
-            fileWriter.close();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
+    public static void sobreEscribir(JSONArray jsonArray, String nombreArchivo){
+        guardar(jsonArray, nombreArchivo);
     }
 
+    // Leer JSON desde archivo
     public static JSONTokener leer(String nombreArchivo) {
-        JSONTokener tokener= null;
         try {
-            tokener = new JSONTokener(new FileReader(nombreArchivo));
+            return new JSONTokener(new FileReader(nombreArchivo));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            return null;
         } catch (JSONException e) {
             e.printStackTrace();
+            return null;
         }
-        return tokener;
     }
 }
