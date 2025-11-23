@@ -40,7 +40,7 @@ public class GestionGimnasio {
         }
 
         if (!autorizado) {
-            throw new UsuarioNoAutorizadoException("Acceso denegado: usuario o contraseña incorrectos.");
+            throw new UsuarioNoAutorizadoException("Acceso denegado: usuario o contraseña incorrectos. ");
         }
     }
     public void crearNuevoAdmin() {
@@ -316,12 +316,13 @@ public class GestionGimnasio {
         String sector = scan.nextLine();
 
         mantenimiento nuevoMantenimiento = new mantenimiento(nombre,edad,dni,sector);
+        this.agregarMantenimiento(nuevoMantenimiento);
     }
     public void agregarMantenimiento (mantenimiento m) {
         if (mantenimientos.add(m))
             System.out.println("Persona de Mantenimiento agregado: " + m.getNombre());
         else
-            System.out.println("Esa persona de mantenimiento ya existe.");
+            System.out.println("Esa persona de mantenimiento ya existe. ");
     }
     public void eliminarMantenimiento (String dni) {
         boolean eliminado = mantenimientos.removeIf(m -> m.getDni().equals(dni));
@@ -336,7 +337,7 @@ public class GestionGimnasio {
         if (this.mantenimientos.isEmpty()) {
             System.out.println("No hay Personal de Mantenimiento registrado.");
         } else {
-            System.out.println("\n--- Lista de Profesores ---");
+            System.out.println("\n--- Lista de Personal de Mantenimiento ---");
             Iterator var1 = this.mantenimientos.iterator();
 
             while(var1.hasNext()) {
@@ -382,6 +383,7 @@ public class GestionGimnasio {
         String especialidad = scan.nextLine();
 
         Profesor nuevoProfesor = new Profesor(nombre,edad,dni,especialidad);
+        this.agregarProfesor(nuevoProfesor);
     }
     public void agregarProfesor (Profesor p) {
         if (profesores.add(p))
@@ -402,7 +404,7 @@ public class GestionGimnasio {
 
     public void mostrarProfesores() {
         if (this.profesores.isEmpty()) {
-            System.out.println("No hay Profesores registrados.");
+            System.out.println("No hay Profesores registrados. ");
         } else {
             System.out.println("\n--- Lista de Profesores ---");
             Iterator var1 = this.profesores.iterator();

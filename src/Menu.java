@@ -33,48 +33,69 @@ public class Menu {
 
 
 
-        while(!salir)
-        {
+        while(!salir) {
             System.out.println("--Bienvenido al Sistema del Gimnasio--");
-            System.out.println("Ingrese su número de documento para iniciar ");
-            System.out.println("Ingrese 5 si desea cerrar el programa");
-            String dni = sc.nextLine();
-            if(dni.equals("5")){
-                System.out.println("Saliendo del programa...");
-                salir=true;
-            }
-            Cliente busqueda = gestionGimnasio.buscarClientePorDni(dni);
-            Asistente buscado = gestionGimnasio.buscarAsistentePorDni(dni);
-            Administrador buscar=gestionGimnasio.buscarAdministradorPorDni(dni);
+            boolean existe= false;
+            System.out.println("Presione 1 si esta registrado o Presione 2 si no lo esta: ");
+            int opcion2 = sc.nextInt();
+            sc.nextLine();
 
-            if(busqueda!=null)
+            switch (opcion2)
             {
-                menuCliente(busqueda,sc);
-            }
-            else if(buscado!=null)
-            {
-                menuAsistente(buscado,sc);
-            }
-            else if(buscar!=null)
-            {
-                menuAdministrador(buscar,sc);
-            }
-            else if(!dni.equals("5"))
-            {
-                System.out.println("El Dni ingresado no esta en nuestra base de datos");
+                case 1 :
+
+                    break;
+
+                case 2 :
+                    existe = true;
+                    break;
+                default:
+                    System.out.println("Comando invalido, intente de nuevo");
+                    break;
+
             }
 
+            if (existe == false) {
+                System.out.println("Ingrese su número de documento para iniciar ");
+                System.out.println("Ingrese 5 si desea cerrar el programa");
+                String dni = sc.nextLine();
+                if (dni.equals("5")) {
+                    System.out.println("Saliendo del programa...");
+                    salir = true;
+                }
+                Cliente busqueda = gestionGimnasio.buscarClientePorDni(dni);
+                Asistente buscado = gestionGimnasio.buscarAsistentePorDni(dni);
+                Administrador buscar = gestionGimnasio.buscarAdministradorPorDni(dni);
+                Profesor busca = gestionGimnasio.buscarProfesorPorDni(dni);
+                mantenimiento busc = gestionGimnasio.buscarmantenimientoPorDni(dni);
 
+                if (busqueda != null) {
+                    menuCliente(busqueda, sc);
+                } else if (buscado != null) {
+                    menuAsistente(buscado, sc);
+                } else if (buscar != null) {
+                    menuAdministrador(buscar, sc);
+                } else if (busca != null) {
+                    menuProfesor(busca, sc);
+                } else if (busc != null) {
+                    menuMantenimiento(busc, sc);
+                } else if (!dni.equals("5")) {
+                    System.out.println("El Dni ingresado no esta en nuestra base de datos");
+                }
+
+
+            }else{
+                gestionGimnasio.crearNuevoCliente();
+                archivos.sobreescribirGimnasioAarchivo("gimnasio.json", gestionGimnasio);
+            }
 
 
         }
         sc.close();
-
-
     }
     public void menuCliente(Cliente busqueda,Scanner sc)
     {
-        System.out.println("Bienvenido/a"+busqueda.getNombre()+", a continuacion indique que desea hacer");
+        System.out.println("Bienvenido/a "+busqueda.getNombre()+", a continuacion indique que desea hacer");
         boolean salir=false;
         while(!salir)
         {
@@ -137,7 +158,7 @@ public class Menu {
     public void menuAsistente(Asistente buscado,Scanner sc)
     {
         boolean salir=false;
-        System.out.println("Bienvenido/a"+buscado.getNombre()+", a continuacion indique que desea hacer");
+        System.out.println("Bienvenido/a "+buscado.getNombre()+", a continuacion indique que desea hacer");
         while(!salir)
         {
             System.out.println("--Menu para Asistentes--");
@@ -243,7 +264,13 @@ public class Menu {
                     System.out.println("Opcion 4 Crear nuevo Asistente");
                     System.out.println("Opcion 5 Crear nuevo Admin");
                     System.out.println("Opcion 6 Mostrar Admins actuales ");
-                    System.out.println("Opcion 7 Salir");
+                    System.out.println("Opcion 7 Mostrar Profesores actuales");
+                    System.out.println("Opcion 8 Eliminar Profesor");
+                    System.out.println("Opcion 9 Crear nuevo Profesor");
+                    System.out.println("Opcion 10 Mostrar Trabajadores de Mantenimiento actuales");
+                    System.out.println("Opcion 11 Eliminar Trabajador de Mantenimiento");
+                    System.out.println("Opcion 12 Crear nuevo Trabajafor de Mantenimiento");
+                    System.out.println("Opcion 13 Salir");
                     opcion1 = sc.nextInt();
                     sc.nextLine();
 
@@ -283,6 +310,42 @@ public class Menu {
                         }
                         case 7 :
                         {
+                            gestionGimnasio.mostrarProfesores();
+                            break;
+                        }
+                        case 8 :
+                        {
+                            System.out.println("Ingrese el dni del Profesor que desea eliminar: ");
+                            gestionGimnasio.mostrarProfesores();
+                            String dniP = sc.nextLine();
+                            gestionGimnasio.eliminarProfesor(dniP);
+                            break;
+                        }
+                        case 9 :
+                        {
+                            gestionGimnasio.crearNuevoProfesor();
+                            break;
+                        }
+                        case 10 :
+                        {
+                            gestionGimnasio.mostrarMantenimiento();
+                            break;
+                        }
+                        case 11 :
+                        {
+                            System.out.println("Ingrese el dni del Asistente que desea eliminar: ");
+                            gestionGimnasio.mostrarMantenimiento();
+                            String dniM = sc.nextLine();
+                            gestionGimnasio.eliminarMantenimiento(dniM);
+                            break;
+                        }
+                        case 12 :
+                        {
+                            gestionGimnasio.crearNuevoMantenimeinto();
+                            break;
+                        }
+                        case 13 :
+                        {
                             System.out.println("Saliendo del menu de Administrador...");
                             salir=true;
                             break;
@@ -301,11 +364,132 @@ public class Menu {
        }
     }
 
+    public void menuProfesor(Profesor buscado, Scanner sc)
+    {
+    boolean salir = false;
+        System.out.println("Bienvenido/a "+buscado.getNombre()+" , a continuacion indique que desea hacer: ");
+        while (!salir)
+        {
+            System.out.println("--Menu para Profesores--");
+            System.out.println("Opcion 1 Ver datos Personales: ");
+            System.out.println("Opción 2 ver clientes Ordenados por nombre");
+            System.out.println("Opción 3 Ver clientes ordenados por Dni ");
+            System.out.println("Opcion 4 crear cliente");
+            System.out.println("Opcion 5 dar de baja cliente");
+            System.out.println("Opcion 6 eliminar cliente");
+            System.out.println("Opción 7 Salir del menu ");
+            int opcion = sc.nextInt();
+            sc.nextLine();
+
+            switch (opcion)
+            {
+                case 1:
+                {
+                    System.out.println(buscado.toString());
+                    break;
+                }
+                case 2:
+                {
+                    gestionGimnasio.mostrarClientesOrdenadosPorNombre();
+                    break;
+                }
+                case 3:
+                {
+                    gestionGimnasio.ordenarClientesPorDni();
+                    gestionGimnasio.mostrarClientes();
+                    break;
+
+                }
+                case 4:
+                {
+                    gestionGimnasio.crearNuevoCliente();
+                    archivos.sobreescribirGimnasioAarchivo("gimnasio.json", gestionGimnasio);
+                    break;
+                }
+                case 5:
+                {
+                    System.out.println("Ingrese el dni del cliente que desea dar de baja");
+                    String dni=sc.nextLine();
+                    Cliente baja=gestionGimnasio.buscarClientePorDni(dni);
+                    if(baja!=null){
+                        gestionGimnasio.darDeBaja(baja);
+                        archivos.sobreescribirGimnasioAarchivo("gimnasio.json", gestionGimnasio);
+                    }
+                    else
+                    {
+                        System.out.println("Ingreso un dni erroneo");
+                    }
+                    break;
+                }
+                case 6:
+                {
+                    System.out.println("Ingrese el dni del cliente que desea eliminar");
+                    String sacar=sc.nextLine();
+                    Cliente eliminar=gestionGimnasio.buscarClientePorDni(sacar);
+                    if(eliminar!=null)
+                    {
+                        gestionGimnasio.eliminarCliente(eliminar.getDni());
+                        archivos.sobreescribirGimnasioAarchivo("gimnasio.json", gestionGimnasio);
+                    }
+                    else
+                    {
+                        System.out.println("Ingreso un dni erroneo");
+                    }
+
+                    break;
+                }
+                case 7:
+                {
+                    System.out.println("Saliendo del menu de Profesor...");
+                    salir=true;
+                    break;
+                }
+                default:
+                {
+                    System.out.println("Comando invalido, intente de nuevo");
+                    break;
+                }
+            }
+        }
+    }
+
+    public void menuMantenimiento(mantenimiento buscado,Scanner sc)
+    {
+        boolean salir = false;
+        System.out.println("Bienvenido/a "+buscado.getNombre()+" , a continuacion indique que desea hacer: ");
+        while (!salir)
+        {
+            System.out.println("--Menu personal de Mantenimiento--");
+            System.out.println("Opcion 1 Ver datos Personales: ");
+            System.out.println("Opción 2 Salir del menu ");
+            int opcion = sc.nextInt();
+            sc.nextLine();
+
+            switch (opcion)
+            {
+                case 1 :
+                {
+                    System.out.println(buscado.toString());
+                }
+                case 2:
+                {
+                    System.out.println("Saliendo del menu de Mantenimiento...");
+                    salir=true;
+                    break;
+                }
+                default:
+                {
+                    System.out.println("Comando invalido, intente de nuevo");
+                    break;
+                }
+            }
+        }
+    }
     public void agregadoDePersonas()
     {
 
         ///HARDCODEO DE AGREGADO////
-
+/*
         Cliente c1 = new Cliente("Agustin",18,"223456",200.0,eCuota.DIA);
         Cliente c2 = new Cliente("Franco",38,"223457",210.0,eCuota.SEMANAL);
         Cliente c3 = new Cliente("Marcos",20,"223458",220.0,eCuota.SEMANAL);
@@ -458,5 +642,7 @@ public class Menu {
         gestionGimnasio.agregarMantenimiento(m8);
         gestionGimnasio.agregarMantenimiento(m9);
         gestionGimnasio.agregarMantenimiento(m10);
+
+ */
     }
 }
